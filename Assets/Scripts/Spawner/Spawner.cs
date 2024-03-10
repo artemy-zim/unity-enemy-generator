@@ -1,33 +1,56 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private SpawnPoint[] _spawnPoints;
-    [SerializeField] private GameObject _enemy;
-    [SerializeField, Min(1)] private float _spawnDelay;
+    [SerializeField] private Enemy _enemy;
+    [SerializeField] private float _spawnDelay;
+
+    private SpawnPoint[] _spawnPoints;
+
+    private void Awake()
+    {
+        _spawnPoints = transform.GetComponentsInChildren<SpawnPoint>();        
+    }
+
+    private void OnValidate()
+    {
+        _spawnDelay = Mathf.Clamp(_spawnDelay, 0, float.MaxValue);
+    }
+
+    private void OnEnable()
+    {
+        if(_enemy == null)
+        {
+            enabled = false;
+            throw new ArgumentNullException(nameof(_enemy));
+        }
+    }
 
     private void Start()
     {
-        StartCoroutine(OnSpawnCoroutine());
+        StartCoroutine(OnSpawnEnemyCoroutine());
     }
 
-    private IEnumerator OnSpawnCoroutine()
+    private IEnumerator OnSpawnEnemyCoroutine()
     {
         while (gameObject.activeSelf)
         {
-            Spawn();
+            SpawnPoint spawnPoint = GetSpawnPoint();
+
+            Enemy enemy = Instantiate(_enemy, spawnPoint.transform.position, Quaternion.LookRotation(spawnPoint.Direction));
+            enemy.SetDirection(spawnPoint.Direction);
 
             yield return new WaitForSeconds(_spawnDelay);
         }
     }
 
-    private void Spawn()
+    private SpawnPoint GetSpawnPoint()
     {
         int minIndex = 0;
 
-        SpawnPoint spawnPoint = _spawnPoints[Random.Range(minIndex, _spawnPoints.Length)];
-
-        Instantiate(_enemy, spawnPoint.Position, spawnPoint.Rotation);
+        return _spawnPoints[Random.Range(minIndex, _spawnPoints.Length)];
     }
 }
