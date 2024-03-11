@@ -6,13 +6,20 @@ using Random = UnityEngine.Random;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Enemy _enemy;
+    [SerializeField] private SpawnPoint[] _spawnPoints;
     [SerializeField] private float _spawnDelay;
 
-    private SpawnPoint[] _spawnPoints;
-
-    private void Awake()
+    private void OnEnable()
     {
-        _spawnPoints = transform.GetComponentsInChildren<SpawnPoint>();        
+        try
+        {
+            Validate();
+        }
+        catch (Exception e) 
+        {
+            enabled = false;
+            throw e;
+        }
     }
 
     private void OnValidate()
@@ -20,13 +27,13 @@ public class Spawner : MonoBehaviour
         _spawnDelay = Mathf.Clamp(_spawnDelay, 0, float.MaxValue);
     }
 
-    private void OnEnable()
+    private void Validate()
     {
         if(_enemy == null)
-        {
-            enabled = false;
             throw new ArgumentNullException(nameof(_enemy));
-        }
+
+        if(_spawnPoints == null)
+            throw new ArgumentNullException(nameof(_spawnPoints));
     }
 
     private void Start()
@@ -36,12 +43,11 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator OnSpawnEnemyCoroutine()
     {
-        while (gameObject.activeSelf)
+        while (enabled)
         {
             SpawnPoint spawnPoint = GetSpawnPoint();
 
-            Enemy enemy = Instantiate(_enemy, spawnPoint.transform.position, Quaternion.LookRotation(spawnPoint.Direction));
-            enemy.SetDirection(spawnPoint.Direction);
+            spawnPoint.SpawnEnemy(_enemy);
 
             yield return new WaitForSeconds(_spawnDelay);
         }

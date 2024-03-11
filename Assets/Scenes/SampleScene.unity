@@ -538,6 +538,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemy: {fileID: 5610474115923440487, guid: cdae384e6ad0f9f44b87f695491dbc4d, type: 3}
+  _spawnPoints:
+  - {fileID: 203362634}
+  - {fileID: 188846070}
+  - {fileID: 692366162}
+  - {fileID: 272070219}
   _spawnDelay: 2
 --- !u!1001 &31857667919776962
 PrefabInstance:
