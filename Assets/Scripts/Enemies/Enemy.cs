@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private EnemyType _type;
     [SerializeField] private float _speed;
 
-    private Vector3 _direction;
+    private Target _target;
+
+    public EnemyType Type => _type;
 
     private void OnValidate()
     {
@@ -14,14 +17,15 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(_speed * Time.deltaTime * _direction, Space.World);
+        transform.position = Vector3.MoveTowards(transform.position, _target.transform.position, _speed * Time.deltaTime);
+        transform.LookAt(_target.transform.position);
     }
 
-    public void SetDirection(Vector3 direction)
+    public void SetTarget(Target target)
     {
-        if (direction == Vector3.zero)
-            throw new ArgumentException(nameof(direction));
+        if (target == null)
+            throw new ArgumentException(nameof(target));
 
-        _direction = direction.normalized;
+        _target = target;
     }
 }

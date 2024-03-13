@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Enemy _enemy;
-    [SerializeField] private SpawnPoint[] _spawnPoints;
+    [SerializeField] private Enemy[] _enemies;
+    [SerializeField] private List<EnemySpawnPoint> _enemySpawnPoints;
     [SerializeField] private float _spawnDelay;
 
     private void OnEnable()
@@ -15,7 +16,7 @@ public class Spawner : MonoBehaviour
         {
             Validate();
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             enabled = false;
             throw e;
@@ -29,11 +30,11 @@ public class Spawner : MonoBehaviour
 
     private void Validate()
     {
-        if(_enemy == null)
-            throw new ArgumentNullException(nameof(_enemy));
+        if (_enemies == null)
+            throw new ArgumentNullException(nameof(_enemies));
 
-        if(_spawnPoints == null)
-            throw new ArgumentNullException(nameof(_spawnPoints));
+        if (_enemySpawnPoints == null)
+            throw new ArgumentNullException(nameof(_enemySpawnPoints));
     }
 
     private void Start()
@@ -45,18 +46,30 @@ public class Spawner : MonoBehaviour
     {
         while (enabled)
         {
-            SpawnPoint spawnPoint = GetSpawnPoint();
+            Enemy enemy = GetEnemy();
+            SpawnPoint spawnPoint = TryGetSpawnPoint(enemy.Type);
 
-            spawnPoint.SpawnEnemy(_enemy);
+            spawnPoint.SpawnEnemy(enemy);
 
             yield return new WaitForSeconds(_spawnDelay);
         }
     }
 
-    private SpawnPoint GetSpawnPoint()
+    private SpawnPoint TryGetSpawnPoint(EnemyType type)
+    {
+        List<EnemySpawnPoint> enemySpawnPoints = _enemySpawnPoints.FindAll(enemySpawnPoint => enemySpawnPoint.Type == type);
+        int minIndex = 0;
+
+        if(enemySpawnPoints.Count == 0)
+            throw new ArgumentException(nameof(_enemySpawnPoints));
+
+        return enemySpawnPoints[Random.Range(minIndex, enemySpawnPoints.Count)].SpawnPoint;
+    }
+
+    private Enemy GetEnemy()
     {
         int minIndex = 0;
 
-        return _spawnPoints[Random.Range(minIndex, _spawnPoints.Length)];
+        return _enemies[Random.Range(minIndex, _enemies.Length)];
     }
 }

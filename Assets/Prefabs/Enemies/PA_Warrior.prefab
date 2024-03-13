@@ -62,20 +62,20 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: cc633396b5f95da4b916357a5508ee4f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 378436016912950278}
+      addedObject: {fileID: 1762264415893353576}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: cc633396b5f95da4b916357a5508ee4f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7375425149806209439}
+      addedObject: {fileID: -8075832165696155639}
     - targetCorrespondingSourceObject: {fileID: 100000, guid: cc633396b5f95da4b916357a5508ee4f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5610474115923440487}
+      addedObject: {fileID: -382150556850096055}
   m_SourcePrefab: {fileID: 100100000, guid: cc633396b5f95da4b916357a5508ee4f, type: 3}
 --- !u!1 &3412526472604863846 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: cc633396b5f95da4b916357a5508ee4f, type: 3}
   m_PrefabInstance: {fileID: 3412526472604896198}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &378436016912950278
+--- !u!54 &1762264415893353576
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,7 +102,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &7375425149806209439
+--- !u!65 &-8075832165696155639
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,9 +121,9 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.70542496, y: 0.4669047, z: 1.0331943}
-  m_Center: {x: -0.0011464655, y: 0.2665476, z: -0.22374237}
---- !u!114 &5610474115923440487
+  m_Size: {x: 0.6668054, y: 0.34383982, z: 0.7665395}
+  m_Center: {x: -0.015207708, y: 0.2022497, z: -0.11673024}
+--- !u!114 &-382150556850096055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,4 +135,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e9a2478affd14468464bad0957f17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 1
   _speed: 1
